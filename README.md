@@ -31,10 +31,10 @@
 	Can be temporary (run once for keyboard) or permanent (simulator started agents)
 	
 	Types of agents:
-		Blinker Generator
-		Tile flipper
-		Beacon generator
-		Glider generator
+		Blinker Generator - Blue
+		Tile flipper - Red
+		Beacon generator - Purple
+		Glider generator - Green
 		Default, which performs the standard GoL update laws to the entire grid, decays colors, and uses democracy for color selection
 		
 ###KeyboardWatcher class
