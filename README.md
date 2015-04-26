@@ -14,7 +14,7 @@
 	Does the repaint op since it has all the info
 	
 ###Tile class
-	x, y
+	x, y and ID where ID = Y*Row_Width+x
 	Color type (enum)
 	On/off
 	Decay'edness to black or white
