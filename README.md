@@ -9,12 +9,15 @@
 	Set number of each agent thread running
 	
 ###Grid class
+	origin is top left
+	0 indexing
 	Holds tiles
 	Has the actual grid
 	Does the repaint op since it has all the info
 	
 ###Tile class
 	x, y
+	ID = y*maxX + x
 	Color type (enum)
 	On/off
 	Decay'edness to black or white
@@ -40,3 +43,9 @@
 ###KeyboardWatcher class
 	Listens for keypresses
 	Spawns agent thread with temporary condition
+
+###Shared resources (lock object)
+	Time (Sim)
+	Tile onOff (Tile)
+	Tile color (Tile)
+	Tile decay (Tile)
