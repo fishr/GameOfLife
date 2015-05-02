@@ -1,0 +1,33 @@
+
+public class Simulator extends Thread{
+
+	private int sec = 0;
+	private int msec = 0;
+	private int dt = 100; // msec
+	
+	public Simulator () {}
+	
+	public synchronized int getSec() {
+		return sec;
+	}
+	
+	public synchronized int getMsec() {
+		return msec;
+	}
+	
+	private void advanceClock() {
+		msec+=dt;
+		if (msec>=1000) {
+			sec++;
+			msec-=1000;
+		}
+	}
+	
+	// TODO: Add synchronization with Agent classes
+	public void run() {
+		while (getSec() < 100) {
+			// TODO: repaint grid
+			advanceClock();
+		}
+	}
+}
