@@ -30,4 +30,9 @@ public class Simulator extends Thread{
 			advanceClock();
 		}
 	}
+	
+	public static void main(String[] args) {
+		// TODO: Pass reference to csv file
+		// Grid g = new Grid(String "csvFile");
+	}
 }

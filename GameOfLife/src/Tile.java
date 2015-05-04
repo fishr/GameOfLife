@@ -23,6 +23,14 @@ public class Tile {
 		ID = y*grid.maxX + x;
 	}
 	
+	public Tile (Simulator s, Grid g, int id) {
+		if (sim == null || g == null)
+			throw new NullPointerException("sim or grid is null");
+		sim = s;
+		grid = g;
+		//TODO: Assign ID, x, y
+	}
+	
 	public int getID() {
 		return ID;
 	}
