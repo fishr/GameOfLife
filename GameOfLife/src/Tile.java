@@ -31,6 +31,20 @@ public class Tile {
 		//TODO: Assign ID, x, y
 	}
 	
+	public Tile(Tile copy){
+		synchronized(copy){
+			this.ID=copy.ID;
+			this.x=copy.x;
+			this.y=copy.y;
+			this.decay=copy.decay;
+			this.color=new Color(copy.color);
+			this.onOff=copy.onOff;
+			
+			this.sim=copy.sim;
+			this.grid=copy.grid;
+		}
+	}
+	
 	public int getID() {
 		return ID;
 	}

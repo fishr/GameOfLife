@@ -13,6 +13,16 @@ public class Color {
 		// TODO: map colors to hsv and assign them here
 	}
 	
+	public Color(Color copy) {
+		synchronized(copy){
+			this.h=copy.h;
+			this.s=copy.s;
+			this.v=copy.v;
+			this.color=copy.color;
+			this.decay=copy.decay;
+		}
+	}
+
 	public int[] getHSV() {
 		return new int[] {h, s, v};
 	}
