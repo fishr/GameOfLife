@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class Agent {
+public abstract class Agent extends Thread{
 
-	Simulator sim;
-	Grid g;
+	final Simulator sim;
+	final Grid g;
 	ArrayList<Tile> buffer;
-	boolean runOnce;
+	final boolean runOnce;
 	double chance;
 	int sec;
 	int msec;
@@ -43,5 +43,30 @@ public abstract class Agent {
 		return this.buffX*this.buffY;
 	}
 	
+	void topLeftCopy(int x, int y){
+		if(((x+this.buffX)>this.g.maxX)||((y+this.buffY)>this.g.maxY)){
+			throw new IllegalArgumentException();
+		}
+		
+		//TODO grab tiles from grid and put in buffer
+	}
+	
+	void waitForGo(){
+		//TODO
+	}
+	
 	abstract void update();
+	
+	public void run(){
+		if(this.runOnce){
+			this.update();
+		}else{
+			while(this.sec<this.sim.endTime){
+				if(this.runCheck()){
+					this.update();
+				}
+				this.waitForGo();
+			}
+		}
+	}
 }

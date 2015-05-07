@@ -1,6 +1,8 @@
 
 public class Simulator extends Thread{
 
+	final int endTime = 100;
+	
 	private int sec = 0;
 	private int msec = 0;
 	private int dt = 100; // msec
@@ -25,7 +27,7 @@ public class Simulator extends Thread{
 	
 	// TODO: Add synchronization with Agent classes
 	public void run() {
-		while (getSec() < 100) {
+		while (getSec() < endTime) {
 			// TODO: repaint grid
 			advanceClock();
 		}
