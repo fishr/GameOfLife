@@ -1,8 +1,8 @@
 
 public class Simulator extends Thread{
 
+	private static String initFile = "foo.csv"; // Change initialization file here
 	final int endTime = 100;
-	
 	private int sec = 0;
 	private int msec = 0;
 	private int dt = 100; // msec
@@ -34,7 +34,8 @@ public class Simulator extends Thread{
 	}
 	
 	public static void main(String[] args) {
-		// TODO: Pass reference to csv file
-		// Grid g = new Grid(String "csvFile");
+		Simulator sim = new Simulator();
+		Grid g = new Grid(sim, initFile);
+		sim.start();
 	}
 }

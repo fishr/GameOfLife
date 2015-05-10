@@ -1,3 +1,5 @@
+import java.util.*;
+
 
 public class Tile {
 
@@ -11,7 +13,7 @@ public class Tile {
 	private Simulator sim;
 	private Grid grid;
 	
-	public Tile (Simulator s, Grid g, int x, int y) {
+	public Tile (Simulator s, Grid g, int x, int y, boolean on) {
 		if (x < 0 || y < 0)
 			throw new IllegalArgumentException ("inputs cannot be negative");
 		if (sim == null || g == null)
@@ -21,14 +23,18 @@ public class Tile {
 		this.x = x;
 		this.y = y;
 		ID = y*grid.maxX + x;
+		onOff = on;
 	}
 	
-	public Tile (Simulator s, Grid g, int id) {
+	public Tile (Simulator s, Grid g, int id, boolean on) {
 		if (sim == null || g == null)
 			throw new NullPointerException("sim or grid is null");
 		sim = s;
 		grid = g;
-		//TODO: Assign ID, x, y
+		ID = id;
+		x = id%grid.maxX;
+		y = id/grid.maxX;
+		onOff = on;
 	}
 	
 	public Tile(Tile copy){
@@ -61,6 +67,12 @@ public class Tile {
 		decay = d;
 	}
 	
+	public void decayTile() {
+		decay-=1;
+		if (decay < 0)
+			decay = 0;
+	}
+	
 	public void flip() {
 		onOff = !onOff;
 	}
@@ -68,4 +80,17 @@ public class Tile {
 	public boolean getOnOff() {
 		return onOff;
 	}
+	
+	public ArrayList<Tile> getNeighbors() {
+		ArrayList<Tile> neighbors = new ArrayList<Tile>();
+		for (int i=x-1; i<=x+1; i++) {
+			for (int j=y-1; j<=y+1; j++) {
+				if (i!=j && i>=0 && j>=0 && i<grid.maxX && j<grid.maxY) {
+					neighbors.add(grid.getTile(i,j));
+				}
+			}
+		}
+		return neighbors;
+	}
+
 }
