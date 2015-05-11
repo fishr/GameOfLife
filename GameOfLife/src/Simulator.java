@@ -29,7 +29,7 @@ public class Simulator extends Thread{
 	public void run() {
 		while (getSec() < endTime) {
 			// TODO: repaint grid
-			advanceClock();
+			//advanceClock();
 		}
 	}
 	

@@ -2,6 +2,8 @@
 
 import java.io.*;
 import java.util.*;
+import javax.swing.JPanel;
+import java.awt.*;
 
 public class Grid {
 
@@ -14,6 +16,8 @@ public class Grid {
 		if (s == null)
 			throw new NullPointerException("sim is null");
 		sim = s;
+		tiles = new ArrayList<Tile>();
+		// parse csv file
 		int x = 0;
 		int y = 0;
 		BufferedReader br = null;
@@ -39,6 +43,9 @@ public class Grid {
 		}
 		maxX = x+1;
 		maxY = y+1;
+		
+		// create GUI
+
 	}
 
 	// Note: the next two functions return pointers to the tiles themselves, not to copies

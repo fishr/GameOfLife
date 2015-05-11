@@ -16,7 +16,7 @@ public class Tile {
 	public Tile (Simulator s, Grid g, int x, int y, boolean on) {
 		if (x < 0 || y < 0)
 			throw new IllegalArgumentException ("inputs cannot be negative");
-		if (sim == null || g == null)
+		if (s == null || g == null)
 			throw new NullPointerException("sim or grid is null");
 		sim = s;
 		grid = g;
