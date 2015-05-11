@@ -1,5 +1,5 @@
 
-public class Color {
+public class ColorHSL {
 
 	private int h;
 	private int s;
@@ -7,13 +7,13 @@ public class Color {
 	private String color;
 	private int decay;
 	
-	public Color (String c, int d) {
+	public ColorHSL (String c, int d) {
 		color = c;
 		decay = d;
 		// TODO: map colors to hsv and assign them here
 	}
 	
-	public Color(Color copy) {
+	public ColorHSL(ColorHSL copy) {
 		synchronized(copy){
 			this.h=copy.h;
 			this.s=copy.s;

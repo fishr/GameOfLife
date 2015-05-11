@@ -1,13 +1,19 @@
+import java.awt.*;
+import javax.swing.JFrame;
 
-public class Simulator extends Thread{
+public class Simulator extends JFrame implements Runnable{
 
-	private static String initFile = "foo.csv"; // Change initialization file here
 	final int endTime = 100;
 	private int sec = 0;
 	private int msec = 0;
 	private int dt = 100; // msec
+	private Grid grid;
 	
-	public Simulator () {}
+	public Simulator (String initFile) {
+		Container c = getContentPane();
+		grid = new Grid(this, initFile);
+		c.add(grid, BorderLayout.CENTER);
+	}
 	
 	public synchronized int getSec() {
 		return sec;
@@ -28,14 +34,20 @@ public class Simulator extends Thread{
 	// TODO: Add synchronization with Agent classes
 	public void run() {
 		while (getSec() < endTime) {
-			// TODO: repaint grid
-			//advanceClock();
+			if (getMsec()%dt == 0) {
+				grid.repaint();
+				advanceClock();
+			}
 		}
 	}
 	
 	public static void main(String[] args) {
-		Simulator sim = new Simulator();
-		Grid g = new Grid(sim, initFile);
-		sim.start();
+		if (args.length<1)
+			throw new IllegalArgumentException ("Please provide a csv startup file");
+		String csvFile = args[0];
+		Simulator sim = new Simulator(csvFile);
+		sim.pack();
+		sim.setVisible(true);
+		sim.run();
 	}
 }

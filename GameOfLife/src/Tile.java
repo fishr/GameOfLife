@@ -7,7 +7,7 @@ public class Tile {
 	private final int x;
 	private final int y;
 	private int decay = 10; // undecayed = 10; fully decayed to black/white = 0;
-	private Color color;
+	private ColorHSL color;
 	private boolean onOff;
 	
 	private Simulator sim;
@@ -43,7 +43,7 @@ public class Tile {
 			this.x=copy.x;
 			this.y=copy.y;
 			this.decay=copy.decay;
-			this.color=new Color(copy.color);
+			this.color=new ColorHSL(copy.color);
 			this.onOff=copy.onOff;
 			
 			this.sim=copy.sim;

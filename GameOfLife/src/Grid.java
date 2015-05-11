@@ -1,16 +1,16 @@
-//TODO: Build GUI
-
 import java.io.*;
 import java.util.*;
 import javax.swing.JPanel;
 import java.awt.*;
+import java.awt.geom.*;
 
-public class Grid {
+public class Grid extends JPanel{
 
 	private Simulator sim;
 	protected final int maxX;
 	protected final int maxY;
 	private ArrayList<Tile> tiles;
+	private static int tileSize = 20; // pixels to a side
 	
 	public Grid (Simulator s, String csvFile) {
 		if (s == null)
@@ -26,6 +26,7 @@ public class Grid {
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
+				x = 0;
 				String[] cells = line.split(splitter);
 				for (int i=0; i<cells.length; i++) {
 					boolean on = false;
@@ -41,11 +42,10 @@ public class Grid {
 		catch (IOException e){
 			e.printStackTrace();
 		}
-		maxX = x+1;
-		maxY = y+1;
-		
-		// create GUI
-
+		maxX = x;
+		maxY = y;
+		setPreferredSize(new Dimension(tileSize*maxX,tileSize*maxY));
+		repaint();
 	}
 
 	// Note: the next two functions return pointers to the tiles themselves, not to copies
@@ -62,5 +62,20 @@ public class Grid {
 		if (id > tiles.size() || id < 0)
 			throw new IllegalArgumentException();
 		return tiles.get(id);
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		for (int i=0; i<tiles.size(); i++) {
+			int x = tiles.get(i).getCoordinates()[0];
+			int y = tiles.get(i).getCoordinates()[1];
+			boolean on = tiles.get(i).getOnOff();
+			if (on)
+				g2.setPaint(Color.BLACK); // TODO: Add color instead of default
+			else
+				g2.setPaint(Color.WHITE);
+			g2.fill(new Rectangle2D.Double(tileSize*x, tileSize*y, tileSize, tileSize));
+		}
 	}
 }
