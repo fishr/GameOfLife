@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.util.concurrent.locks.*;
 
 public class Tile {
 
@@ -7,6 +9,9 @@ public class Tile {
 	private int decay = 10; // undecayed = 10; fully decayed to black/white = 0;
 	private Color color;
 	private boolean onOff;
+	
+	final Lock lock = new ReentrantLock();
+	final Condition occupied  = lock.newCondition();
 	
 	private Simulator sim;
 	private Grid grid;
@@ -28,7 +33,9 @@ public class Tile {
 			throw new NullPointerException("sim or grid is null");
 		sim = s;
 		grid = g;
-		//TODO: Assign ID, x, y
+		this.y=id/g.maxX;
+		this.x=id%g.maxX;
+		ID=id;
 	}
 	
 	public Tile(Tile copy){
@@ -37,7 +44,7 @@ public class Tile {
 			this.x=copy.x;
 			this.y=copy.y;
 			this.decay=copy.decay;
-			this.color=new Color(copy.color);
+			this.color=copy.color;
 			this.onOff=copy.onOff;
 			
 			this.sim=copy.sim;
@@ -57,11 +64,11 @@ public class Tile {
 		return decay;
 	}
 	
-	public void setDecay(int d) {
+	public synchronized void setDecay(int d) {
 		decay = d;
 	}
 	
-	public void flip() {
+	public synchronized void flip() {
 		onOff = !onOff;
 	}
 	

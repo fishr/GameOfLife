@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.awt.Color;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Agent extends Thread{
