@@ -49,6 +49,12 @@ public abstract class Agent extends Thread{
 		}
 		
 		//TODO grab tiles from grid and put in buffer
+
+		for(int i = this.buffX*this.buffY; i>0; i--){
+			this.g.lockTile(this, i);
+			buffer.set(i, new Tile(this.g.getTile(i)));
+		}
+		
 	}
 	
 	void waitForGo(){

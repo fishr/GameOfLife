@@ -8,8 +8,16 @@ public class Default extends Agent {
 
 	@Override
 	void update() {
-		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	void topLeftCopy(int x, int y){
+		topLeftCopy(0,0);
+	}
+	
+	void topLeftCopy(){
+		topLeftCopy(0,0);
 	}
 
 }
