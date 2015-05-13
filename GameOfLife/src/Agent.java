@@ -58,15 +58,19 @@ public abstract class Agent extends Thread{
 	abstract void update();
 	
 	public void run(){
-		if(this.runOnce){
-			this.update();
-		}else{
-			while(this.sec<this.sim.endTime){
-				if(this.runCheck()){
-					this.update();
+		try{
+			if(this.runOnce){
+				this.update();
+			}else{
+				while(this.sec<this.sim.endTime){
+					if(this.runCheck()){
+						this.update();
+					}
+					this.waitForGo();
 				}
-				this.waitForGo();
 			}
+		}finally{
+			this.g.releaseTiles(this);
 		}
 	}
 }

@@ -78,8 +78,22 @@ public class Grid extends JPanel{
 		}
 		
 		if(id<this.agents.get(taker).peek()){
-			
+			this.agents.get(taker).add(id);
+			getTile(id).lock.lock();
+		}else{
+			throw new IllegalArgumentException("cannot lock tile of higher id");
 		}
+	}
+	
+	public void releaseTiles(Agent dead){
+		PriorityQueue<Integer> q = this.agents.get(dead);
+		if(q==null)
+			return;
+		while(!q.isEmpty()){
+			getTile(q.remove()).lock.unlock();
+		}
+		
+		this.agents.remove(dead);
 	}
 	
 	public void paintComponent(Graphics g) {
