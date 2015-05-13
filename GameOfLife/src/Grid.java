@@ -1,12 +1,17 @@
 import java.io.*;
 import java.util.*;
+
 import javax.swing.JPanel;
+
 import java.awt.*;
 import java.awt.geom.*;
 
 public class Grid extends JPanel{
 
 	private Simulator sim;
+	
+	Hashtable<Agent, PriorityQueue<Integer>> agents;
+	
 	protected final int maxX;
 	protected final int maxY;
 	private ArrayList<Tile> tiles;
@@ -62,6 +67,19 @@ public class Grid extends JPanel{
 		if (id > tiles.size() || id < 0)
 			throw new IllegalArgumentException();
 		return tiles.get(id);
+	}
+	
+	public void lockTile(Agent taker, Integer id){
+		synchronized(this.agents){
+			if(!this.agents.containsKey(taker)){
+				PriorityQueue<Integer> q = new PriorityQueue<Integer>();
+				this.agents.put(taker, q);
+			}
+		}
+		
+		if(id<this.agents.get(taker).peek()){
+			
+		}
 	}
 	
 	public void paintComponent(Graphics g) {

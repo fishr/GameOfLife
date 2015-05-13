@@ -1,9 +1,8 @@
 
 public class Default extends Agent {
 
-	public Default(Simulator sim, Grid g, boolean runOnce, double chance,
-			ColorHSL c, int buffX, int buffY) {
-		super(sim, g, runOnce, chance, c, buffX, buffY);
+	public Default(Simulator sim, Grid g) {
+		super(sim, g, false, 1, c, g.maxX, g.maxY);
 		// TODO Auto-generated constructor stub
 	}
 

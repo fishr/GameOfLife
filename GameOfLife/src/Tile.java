@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.locks.*;
 
 
 public class Tile {
@@ -10,6 +11,9 @@ public class Tile {
 	private ColorHSL color;
 	private boolean onOff;
 	
+	final Lock lock = new ReentrantLock();
+	final Condition occupied  = lock.newCondition();
+	
 	private Simulator sim;
 	private Grid grid;
 	
@@ -18,23 +22,23 @@ public class Tile {
 			throw new IllegalArgumentException ("inputs cannot be negative");
 		if (s == null || g == null)
 			throw new NullPointerException("sim or grid is null");
-		sim = s;
-		grid = g;
+		this.sim = s;
+		this.grid = g;
 		this.x = x;
 		this.y = y;
-		ID = y*grid.maxX + x;
-		onOff = on;
+		this.ID = y*grid.maxX + x;
+		this.onOff = on;
 	}
 	
 	public Tile (Simulator s, Grid g, int id, boolean on) {
 		if (sim == null || g == null)
 			throw new NullPointerException("sim or grid is null");
-		sim = s;
-		grid = g;
-		ID = id;
-		x = id%grid.maxX;
-		y = id/grid.maxX;
-		onOff = on;
+		this.sim = s;
+		this.grid = g;
+		this.ID = id;
+		this.x = id%grid.maxX;
+		this.y = id/grid.maxX;
+		this.onOff = on;
 	}
 	
 	public Tile(Tile copy){
@@ -60,25 +64,25 @@ public class Tile {
 	}
 	
 	public int getDecay() {
-		return decay;
+		return this.decay;
 	}
 	
-	public void setDecay(int d) {
-		decay = d;
+	public synchronized void setDecay(int d) {
+		this.decay = d;
 	}
 	
-	public void decayTile() {
-		decay-=1;
-		if (decay < 0)
-			decay = 0;
+	public synchronized void decayTile() {
+		this.decay-=1;
+		if (this.decay < 0)
+			this.decay = 0;
 	}
 	
-	public void flip() {
-		onOff = !onOff;
+	public synchronized void flip() {
+		this.onOff = !onOff;
 	}
 	
 	public boolean getOnOff() {
-		return onOff;
+		return this.onOff;
 	}
 	
 	public ArrayList<Tile> getNeighbors() {
