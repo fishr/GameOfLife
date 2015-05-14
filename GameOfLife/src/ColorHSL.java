@@ -14,14 +14,14 @@ public class ColorHSL {
 	public ColorHSL (Tile t, Color rgb, int d) {
 		this.rgb = rgb;
 		this.tile = t;
-		if (decay < 0 || decay > 5)
-			throw new IllegalArgumentException ("decay must be in range [0,5]");
+		if (decay < 0 || decay > 25)
+			throw new IllegalArgumentException ("decay must be in range [0,25]");
 		decay = d;
 		hsl = fromRGB(rgb);
 		if (tile.getOnOff())
-			hsl[2] = 25.0f - decay*5;
+			hsl[2] = 25.0f - decay;
 		else
-			hsl[2] = 75.0f + decay*5;
+			hsl[2] = 75.0f + decay;
 	}
 	
 	public ColorHSL(ColorHSL copy, Tile t) {
@@ -43,14 +43,14 @@ public class ColorHSL {
 	
 	public Color decayColor() {
 		decay++;
-		if (decay > 5)
-			decay = 5;
+		if (decay > 25)
+			decay = 25;
 		boolean on = tile.getOnOff();
 		if (on) {
-			hsl[2] = 25.0f - decay*5;
+			hsl[2] = 25.0f - decay;
 		}
 		else {
-			hsl[2] = 75.0f + decay*5;
+			hsl[2] = 75.0f + decay;
 		}
 		return toRGB(hsl);
 	}

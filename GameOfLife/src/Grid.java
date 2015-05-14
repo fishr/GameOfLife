@@ -39,7 +39,7 @@ public class Grid extends JPanel implements KeyListener{
 					Color c = Color.GRAY;
 					if (cells[i].equals("1"))
 						on = true;
-					Tile t = new Tile(sim, this, x, y, on, c, 5);
+					Tile t = new Tile(sim, this, x, y, on, c, 25);
 					tiles.add(t);
 					x++;
 				}
