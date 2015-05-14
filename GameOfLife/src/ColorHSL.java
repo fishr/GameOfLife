@@ -22,8 +22,6 @@ public class ColorHSL {
 			hsl[2] = 25.0f - decay*5;
 		else
 			hsl[2] = 75.0f + decay*5;
-
-//		System.out.println("Tile: " + tile.getOnOff() + " hsl: " + hsl[0] + ", " + hsl[1] + ", " + hsl[2]);
 	}
 	
 	public ColorHSL(ColorHSL copy, Tile t) {
@@ -93,21 +91,17 @@ public class ColorHSL {
 	
 	public static float[] fromRGB (Color color) {
 	//  Get RGB values in the range 0 - 1
-
 		float[] rgb = color.getRGBColorComponents( null );
 		float r = rgb[0];
 		float g = rgb[1];
 		float b = rgb[2];
 
 		//	Minimum and Maximum RGB values are used in the HSL calculations
-
 		float min = Math.min(r, Math.min(g, b));
 		float max = Math.max(r, Math.max(g, b));
 
 		//  Calculate the Hue
-
 		float h = 0;
-
 		if (max == min)
 			h = 0;
 		else if (max == r)
@@ -118,11 +112,9 @@ public class ColorHSL {
 			h = (60 * (r - g) / (max - min)) + 240;
 
 		//  Calculate the Luminance
-
 		float l = (max + min) / 2;
 
 		//  Calculate the Saturation
-
 		float s = 0;
 
 		if (max == min)
@@ -131,25 +123,20 @@ public class ColorHSL {
 			s = (max - min) / (max + min);
 		else
 			s = (max - min) / (2 - max - min);
-
+		
 		return new float[] {h, s * 100, l * 100};
 	}
 	
 	private static float HueToRGB(float p, float q, float h)
 	{
 		if (h < 0) h += 1;
-
 		if (h > 1 ) h -= 1;
-
 		if (6 * h < 1)
 			return p + ((q - p) * 6 * h);
-
 		if (2 * h < 1 )
 			return  q;
-
 		if (3 * h < 2)
 			return p + ( (q - p) * 6 * ((2.0f / 3.0f) - h) );
-		
    		return p;
 	}
 }
