@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.awt.Color;
 
 public class Default extends Agent {
@@ -11,8 +12,7 @@ public class Default extends Agent {
 
 	@Override
 	void update() {
-		ArrayList<Integer> voteList = new ArrayList<Integer>();
-		voteList.ensureCapacity(this.buffSize());
+		Hashtable<Integer,Integer> voteList = new Hashtable<Integer,Integer>();
 		for(int i=0; i<this.buffSize(); i++){
 			int votes = 0;
 			boolean left=false;
@@ -33,7 +33,7 @@ public class Default extends Agent {
 				if(right)
 					votes+=this.buffer.get(i+1-this.buffX).getOnOff() ? 1 : 0;
 			}
-			if(i<(this.buffSize()-this.buffX)){
+			if(i<(this.buffSize()-1-this.buffX)){
 				votes+=this.buffer.get(i+this.buffX).getOnOff() ? 1 : 0;
 				
 				if(left)
@@ -42,7 +42,7 @@ public class Default extends Agent {
 					votes+=this.buffer.get(i+1+this.buffX).getOnOff() ? 1 : 0;
 			}
 			
-			voteList.set(i, votes);
+			voteList.put(i, votes);
 		}
 		
 
