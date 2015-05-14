@@ -15,7 +15,7 @@ public class Grid extends JPanel implements KeyListener{
 	protected int maxX;
 	protected int maxY;
 	private ArrayList<Tile> tiles;
-	private static int tileSize = 20; // pixels to a side
+	private static int tileSize = 10; // pixels to a side
 	
 	public Grid (Simulator s, String csvFile) {
 		if (s == null)

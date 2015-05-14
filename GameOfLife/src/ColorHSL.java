@@ -59,6 +59,10 @@ public class ColorHSL {
 		return toRGB(hsl);
 	}
 	
+	public Color getInitRGB() {
+		return rgb;
+	}
+	
 	public static Color toRGB (float[] hsl) {
 		float h = hsl[0]; float s = hsl[1]; float l = hsl[2];
 		if (s < 0.0f || s > 100.0f)
