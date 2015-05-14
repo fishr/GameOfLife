@@ -89,16 +89,11 @@ public abstract class Agent extends Thread{
 			}else{
 				while(this.sec<this.sim.endTime){
 					if(this.runCheck()){
-						System.out.print(this.sim.syncCount);
-						System.out.print(" of ");
-						System.out.println(this.sim.agents.size());
+						System.out.println("hello");
 						this.topLeftCopy();
 						this.update();
 						this.writeBuffer();
-					}else{
-						System.out.println("failed check");
 					}
-					System.out.println("done");
 					this.waitForGo();
 				}
 			}
