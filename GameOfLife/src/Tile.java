@@ -29,7 +29,25 @@ public class Tile {
 		this.y = y;
 		ID = y*grid.maxX + x;
 		onOff = on;
-		colorHSL = new ColorHSL(rgb, 0);
+		colorHSL = new ColorHSL(this, rgb, 0);
+	}
+	
+	public Tile (Simulator s, Grid g, int x, int y, boolean on, Color rgb, int d) {
+		if (x < 0 || y < 0)
+			throw new IllegalArgumentException ("inputs cannot be negative");
+		if (s == null || g == null)
+			throw new NullPointerException("sim or grid is null");
+		this.sim = s;
+		this.grid = g;
+		this.x = x;
+		this.y = y;
+		ID = y*grid.maxX + x;
+		onOff = on;
+		if (decay >= 0 && decay <=5)
+			decay = d;
+		else
+			decay = 0;
+		colorHSL = new ColorHSL(this, rgb, d);
 	}
 	
 	public Tile (Simulator s, Grid g, int id, boolean on, Color rgb) {
@@ -41,9 +59,23 @@ public class Tile {
 		x = id%grid.maxX;
 		y = id/grid.maxX;
 		onOff = on;
-		colorHSL = new ColorHSL(rgb, 0);
-		this.onOff = on;
-		colorHSL = new ColorHSL(rgb, 0);
+		colorHSL = new ColorHSL(this, rgb, 0);
+	}
+	
+	public Tile (Simulator s, Grid g, int id, boolean on, Color rgb, int d) {
+		if (s == null || g == null)
+			throw new NullPointerException("sim or grid is null");
+		sim = s;
+		grid = g;
+		ID = id;
+		x = id%grid.maxX;
+		y = id/grid.maxX;
+		onOff = on;
+		if (decay >= 0 && decay <=5)
+			decay = d;
+		else
+			decay = 0;
+		colorHSL = new ColorHSL(this, rgb, d);
 	}
 	
 	public Tile(Tile copy){

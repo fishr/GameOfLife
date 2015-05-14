@@ -35,14 +35,10 @@ public class Grid extends JPanel{
 				String[] cells = line.split(splitter);
 				for (int i=0; i<cells.length; i++) {
 					boolean on = false;
-					Color c;
-					if (cells[i].equals("1")) {
+					Color c = Color.GRAY;
+					if (cells[i].equals("1"))
 						on = true;
-						c = Color.BLACK;
-					}
-					else
-						c = Color.WHITE;
-					Tile t = new Tile(sim, this, x, y, on, c);
+					Tile t = new Tile(sim, this, x, y, on, c, 5);
 					tiles.add(t);
 					x++;
 				}
