@@ -33,7 +33,9 @@ public class Simulator extends JFrame implements Runnable{
 		agents.get(1).start();
 		agents.add(new Blinker(this,grid, false, .25));
 		agents.get(2).start();
-	}
+		agents.add(new Glider(this,grid,false,.25));
+		agents.get(3).start();
+		}
 	
 	public int getSec() {
 		return sec;

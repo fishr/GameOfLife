@@ -102,7 +102,7 @@ public class Default extends Agent {
 			}
 
 			this.buffer.get(i).decayTile();
-			this.buffer.get(i).changeColor(colorList.get(i), this.buffer.get(i).getDecay());
+			//this.buffer.get(i).changeColor(colorList.get(i));//, this.buffer.get(i).getDecay());
 		}
 	}
 	
