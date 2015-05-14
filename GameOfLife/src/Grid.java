@@ -30,9 +30,14 @@ public class Grid extends JPanel{
 				String[] cells = line.split(splitter);
 				for (int i=0; i<cells.length; i++) {
 					boolean on = false;
-					if (cells[i].equals("1"))
+					Color c;
+					if (cells[i].equals("1")) {
 						on = true;
-					Tile t = new Tile(sim, this, x, y, on);
+						c = Color.BLACK;
+					}
+					else
+						c = Color.WHITE;
+					Tile t = new Tile(sim, this, x, y, on, c);
 					tiles.add(t);
 					x++;
 				}
@@ -70,11 +75,13 @@ public class Grid extends JPanel{
 		for (int i=0; i<tiles.size(); i++) {
 			int x = tiles.get(i).getCoordinates()[0];
 			int y = tiles.get(i).getCoordinates()[1];
-			boolean on = tiles.get(i).getOnOff();
-			if (on)
-				g2.setPaint(Color.BLACK); // TODO: Add color instead of default
-			else
-				g2.setPaint(Color.WHITE);
+//			boolean on = tiles.get(i).getOnOff();
+//			if (on)
+//				g2.setPaint(Color.BLACK); // TODO: Add color instead of default
+//			else
+//				g2.setPaint(Color.WHITE);
+			Color c = tiles.get(i).getColorHSL().getColorRGB();
+			g2.setPaint(c);
 			g2.fill(new Rectangle2D.Double(tileSize*x, tileSize*y, tileSize, tileSize));
 		}
 	}

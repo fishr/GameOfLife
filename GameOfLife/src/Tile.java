@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.*;
 
 
@@ -6,14 +7,14 @@ public class Tile {
 	private final int ID; // ID, x, and y - all 0 indexed
 	private final int x;
 	private final int y;
-	private int decay = 10; // undecayed = 10; fully decayed to black/white = 0;
-	private ColorHSL color;
+	private int decay = 0; // undecayed (full color) = 0; fully decayed to black/white = 5;
+	private ColorHSL colorHSL;
 	private boolean onOff;
 	
 	private Simulator sim;
 	private Grid grid;
 	
-	public Tile (Simulator s, Grid g, int x, int y, boolean on) {
+	public Tile (Simulator s, Grid g, int x, int y, boolean on, Color rgb) {
 		if (x < 0 || y < 0)
 			throw new IllegalArgumentException ("inputs cannot be negative");
 		if (s == null || g == null)
@@ -24,9 +25,10 @@ public class Tile {
 		this.y = y;
 		ID = y*grid.maxX + x;
 		onOff = on;
+		colorHSL = new ColorHSL(rgb, 0);
 	}
 	
-	public Tile (Simulator s, Grid g, int id, boolean on) {
+	public Tile (Simulator s, Grid g, int id, boolean on, Color rgb) {
 		if (sim == null || g == null)
 			throw new NullPointerException("sim or grid is null");
 		sim = s;
@@ -35,6 +37,7 @@ public class Tile {
 		x = id%grid.maxX;
 		y = id/grid.maxX;
 		onOff = on;
+		colorHSL = new ColorHSL(rgb, 0);
 	}
 	
 	public Tile(Tile copy){
@@ -43,7 +46,7 @@ public class Tile {
 			this.x=copy.x;
 			this.y=copy.y;
 			this.decay=copy.decay;
-			this.color=new ColorHSL(copy.color);
+			this.colorHSL=new ColorHSL(copy.colorHSL, this);
 			this.onOff=copy.onOff;
 			
 			this.sim=copy.sim;
@@ -63,22 +66,24 @@ public class Tile {
 		return decay;
 	}
 	
-	public void setDecay(int d) {
-		decay = d;
-	}
-	
 	public void decayTile() {
-		decay-=1;
-		if (decay < 0)
-			decay = 0;
+		decay++;
+		if (decay > 5)
+			decay = 5;
+		colorHSL.decayColor();
 	}
 	
 	public void flip() {
 		onOff = !onOff;
+		colorHSL.flipColor();
 	}
 	
 	public boolean getOnOff() {
 		return onOff;
+	}
+	
+	public ColorHSL getColorHSL() {
+		return colorHSL;
 	}
 	
 	public ArrayList<Tile> getNeighbors() {
