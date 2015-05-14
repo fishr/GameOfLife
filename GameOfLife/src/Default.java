@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Default extends Agent {
 
@@ -8,10 +10,12 @@ public class Default extends Agent {
 
 	@Override
 	void update() {
+		ArrayList<Integer> voteList = new ArrayList<Integer>();
+		voteList.ensureCapacity(this.buffSize());
 		for(int i=0; i<this.buffSize(); i++){
+			int votes = 0;
 			boolean left=false;
 			boolean right = false;
-			int votes=0;
 			if((i%this.buffX)!=0){
 				left=true;
 				votes+=this.buffer.get(i-1).getOnOff() ? 1 : 0;
@@ -35,8 +39,14 @@ public class Default extends Agent {
 					votes+=this.buffer.get(i-1+this.buffX).getOnOff() ? 1 : 0;
 				if(right)
 					votes+=this.buffer.get(i+1+this.buffX).getOnOff() ? 1 : 0;
-			}	
+			}
 			
+			voteList.set(i, votes);
+		}
+		
+
+		for(int i=0; i<this.buffSize(); i++){
+			int votes = voteList.get(i);
 			if(this.buffer.get(i).getOnOff()){
 				if(votes>3||votes<2){
 					this.buffer.get(i).flip();
