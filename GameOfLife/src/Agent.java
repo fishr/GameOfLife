@@ -32,8 +32,11 @@ public abstract class Agent extends Thread{
 		
 		this.buffer=new Hashtable<Integer,Tile>();
 		
-		this.msec=sim.getMsec();
+		this.msec=sim.getMsec()-this.sim.dt;
 		this.sec=sim.getSec();
+		
+		if(!this.runOnce)
+			this.sim.incSync();
 	}
 	
 	boolean runCheck(){
@@ -81,7 +84,7 @@ public abstract class Agent extends Thread{
 	}
 	
 	void waitForGo(){
-		this.msec=this.sim.getSyncMsec(this.msec);
+		this.msec=this.sim.getSyncMsec(this.msec, this.runOnce);
 		this.sec=this.sim.getSec();
 	}
 	
