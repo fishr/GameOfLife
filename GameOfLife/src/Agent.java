@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -10,13 +11,13 @@ public abstract class Agent extends Thread{
 	double chance;
 	int sec;
 	int msec;
-	ColorHSL c;
+	Color c;
 	int buffX;
 	int buffY;
 	int leftX=0;
 	int topY=0;
 	
-	public Agent(Simulator sim, Grid g, boolean runOnce, double chance, ColorHSL c, int buffX, int buffY){
+	public Agent(Simulator sim, Grid g, boolean runOnce, double chance, Color c, int buffX, int buffY){
 		if(chance>1 || chance<=0 ||sim.equals(null)||g.equals(null)||c.equals(null)||buffX<1||buffY<1){
 			throw new IllegalArgumentException();
 		}
