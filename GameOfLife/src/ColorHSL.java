@@ -22,7 +22,8 @@ public class ColorHSL {
 			hsl[2] = 25.0f - decay*5;
 		else
 			hsl[2] = 75.0f + decay*5;
-		//System.out.println("Tile: " + tile.getOnOff() + " hsl: " + hsl[0] + ", " + hsl[1] + ", " + hsl[2]);
+
+//		System.out.println("Tile: " + tile.getOnOff() + " hsl: " + hsl[0] + ", " + hsl[1] + ", " + hsl[2]);
 	}
 	
 	public ColorHSL(ColorHSL copy, Tile t) {
