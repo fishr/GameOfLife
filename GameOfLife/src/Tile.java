@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.util.*;
+import java.util.concurrent.locks.*;
 
 
 public class Tile {
@@ -11,16 +12,19 @@ public class Tile {
 	private ColorHSL colorHSL;
 	private boolean onOff;
 	
-	private Simulator sim;
-	private Grid grid;
+	final Lock lock = new ReentrantLock();
+	final Condition occupied  = lock.newCondition();
+	
+	private final Simulator sim;
+	private final Grid grid;
 	
 	public Tile (Simulator s, Grid g, int x, int y, boolean on, Color rgb) {
 		if (x < 0 || y < 0)
 			throw new IllegalArgumentException ("inputs cannot be negative");
 		if (s == null || g == null)
 			throw new NullPointerException("sim or grid is null");
-		sim = s;
-		grid = g;
+		this.sim = s;
+		this.grid = g;
 		this.x = x;
 		this.y = y;
 		ID = y*grid.maxX + x;
@@ -29,7 +33,7 @@ public class Tile {
 	}
 	
 	public Tile (Simulator s, Grid g, int id, boolean on, Color rgb) {
-		if (sim == null || g == null)
+		if (s == null || g == null)
 			throw new NullPointerException("sim or grid is null");
 		sim = s;
 		grid = g;
@@ -37,6 +41,8 @@ public class Tile {
 		x = id%grid.maxX;
 		y = id/grid.maxX;
 		onOff = on;
+		colorHSL = new ColorHSL(rgb, 0);
+		this.onOff = on;
 		colorHSL = new ColorHSL(rgb, 0);
 	}
 	
@@ -54,6 +60,12 @@ public class Tile {
 		}
 	}
 	
+	synchronized void copyTile(Tile copy){
+		this.decay=copy.getDecay();
+		this.colorHSL=new ColorHSL(copy.getColor(), this);
+		this.onOff=copy.getOnOff();
+	}
+	
 	public int getID() {
 		return ID;
 	}
@@ -62,10 +74,14 @@ public class Tile {
 		return new int[]{x,y};
 	}
 	
-	public int getDecay() {
-		return decay;
+	public ColorHSL getColor(){
+		return this.colorHSL;
 	}
 	
+	public int getDecay() {
+		return this.decay;
+	}
+
 	public void decayTile() {
 		decay++;
 		if (decay > 5)
@@ -73,13 +89,13 @@ public class Tile {
 		colorHSL.decayColor();
 	}
 	
-	public void flip() {
+	public synchronized void flip() {
 		onOff = !onOff;
 		colorHSL.flipColor();
 	}
 	
 	public boolean getOnOff() {
-		return onOff;
+		return this.onOff;
 	}
 	
 	public ColorHSL getColorHSL() {

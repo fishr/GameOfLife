@@ -13,6 +13,8 @@ public abstract class Agent extends Thread{
 	ColorHSL c;
 	int buffX;
 	int buffY;
+	int leftX=0;
+	int topY=0;
 	
 	public Agent(Simulator sim, Grid g, boolean runOnce, double chance, ColorHSL c, int buffX, int buffY){
 		if(chance>1 || chance<=0 ||sim.equals(null)||g.equals(null)||c.equals(null)||buffX<1||buffY<1){
@@ -43,12 +45,32 @@ public abstract class Agent extends Thread{
 		return this.buffX*this.buffY;
 	}
 	
-	void topLeftCopy(int x, int y){
-		if(((x+this.buffX)>this.g.maxX)||((y+this.buffY)>this.g.maxY)){
-			throw new IllegalArgumentException();
+	synchronized void setROI(int x, int y){
+		if(((this.leftX)>this.g.maxX)||((this.topY)>this.g.maxY)){
+			throw new IllegalArgumentException("corner out of bounds");
 		}
 		
-		//TODO grab tiles from grid and put in buffer
+		this.topY=y;
+		this.leftX =x;
+	}
+	
+	void topLeftCopy(){
+		if(((this.leftX+this.buffX)>this.g.maxX)||((this.topY+this.buffY)>this.g.maxY)){
+			throw new IllegalArgumentException("buffer out of bounds");
+		}
+		
+		for(int i = buffSize(); i>0; i--){
+			this.g.lockTile(this, i);
+			buffer.set(i, new Tile(this.g.getTile(i)));
+		}
+		
+	}
+	
+	void writeBuffer(){
+		for(int i = 0; i<buffSize(); i++){
+			Tile temp = buffer.get(i);
+			this.g.getTile(temp.getID()).copyTile(temp);
+		}
 	}
 	
 	void waitForGo(){
@@ -58,15 +80,21 @@ public abstract class Agent extends Thread{
 	abstract void update();
 	
 	public void run(){
-		if(this.runOnce){
-			this.update();
-		}else{
-			while(this.sec<this.sim.endTime){
-				if(this.runCheck()){
-					this.update();
+		try{
+			if(this.runOnce){
+				this.update();
+			}else{
+				while(this.sec<this.sim.endTime){
+					if(this.runCheck()){
+						this.topLeftCopy();
+						this.update();
+						this.writeBuffer();
+					}
+					this.waitForGo();
 				}
-				this.waitForGo();
 			}
+		}finally{
+			this.g.releaseTiles(this);
 		}
 	}
 }
