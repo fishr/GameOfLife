@@ -11,10 +11,11 @@ public class Simulator extends JFrame implements Runnable{
 	final int endTime = 100;
 	private int sec = 0;
 	private int msec = 0;
-	private int dt = 100; // msec
+	final int dt = 100; // msec
 	private Grid grid;
 	ArrayList<Agent> agents;
-	protected int syncCount=0;
+	private int syncCount=0;
+	private int syncReset=0;
 	
 	private final Lock lock = new ReentrantLock();
 	private final Condition free = lock.newCondition();
@@ -44,56 +45,50 @@ public class Simulator extends JFrame implements Runnable{
 		this.agents.remove(agent);
 	}
 	
-	public int getSyncMsec(int ms) {
-		this.lock.lock();
-
-		try{
-			while(ms==msec||this.syncCount==0){
-				try{
-					free.await();
-				}catch(InterruptedException e){
-					Thread.currentThread().interrupt();
-				}
+	public synchronized void incSync(){
+		this.syncReset++;
+	}
+	
+	public synchronized int getSyncMsec(int ms, boolean runOnce) {
+		while(ms==msec||this.syncCount==0){
+			try{
+				wait();
+			}catch(InterruptedException e){
+				Thread.currentThread().interrupt();
 			}
-			this.syncCount--;
-			free.signalAll();
-		}finally{
-			lock.unlock();
 		}
+		if(!runOnce)
+			this.syncCount--;
+		notifyAll();
+
 		return msec;
 	}
 	
-	private void advanceClock() {
-		this.lock.lock();
-		try{
-			while(this.syncCount!=0){
-				try{
-					free.await();
-				}catch(InterruptedException e){
-					Thread.currentThread().interrupt();
-				}
+	private synchronized void advanceClock() {
+		while(this.syncCount!=0){
+			try{
+				wait();
+			}catch(InterruptedException e){
+				Thread.currentThread().interrupt();
 			}
-			synchronized(this){
-				this.syncCount=this.agents.size();
-				msec+=dt;
-				if (msec>=1000) {
-					sec++;
-					msec-=1000;
-				}
-				
-				try {
-					Thread.sleep(100);
-//					Thread.sleep(1);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-			free.signalAll();
-		}finally{
-			lock.unlock();
 		}
+			this.syncCount=this.syncReset;
+			msec+=dt;
+			if (msec>=1000) {
+				sec++;
+				msec-=1000;
+			}
+			
+			try {
+				Thread.sleep(100);
+//					Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		
+		notifyAll();
 	}
 	
 	public void run() {
