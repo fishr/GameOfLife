@@ -89,7 +89,6 @@ public abstract class Agent extends Thread{
 			}else{
 				while(this.sec<this.sim.endTime){
 					if(this.runCheck()){
-						System.out.println("hello");
 						this.topLeftCopy();
 						this.update();
 						this.writeBuffer();

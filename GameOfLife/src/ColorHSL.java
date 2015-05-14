@@ -36,7 +36,7 @@ public class ColorHSL {
 	}
 	
 	public void flipColor() {
-		hsl[0] = 1-hsl[0];
+		hsl[2] = 100-hsl[2];
 	}
 	
 	public Color decayColor() {
