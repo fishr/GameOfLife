@@ -31,6 +31,8 @@ public class Simulator extends JFrame implements Runnable{
 		agents.get(0).start();
 		agents.add(new TileFlipper(this,grid,false, .5));
 		agents.get(1).start();
+		agents.add(new Blinker(this,grid, false, .25));
+		agents.get(2).start();
 	}
 	
 	public int getSec() {
