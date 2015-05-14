@@ -1,12 +1,13 @@
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Agent extends Thread{
 
 	final Simulator sim;
 	final Grid g;
-	ArrayList<Tile> buffer;
+	Hashtable<Integer, Tile> buffer;
 	final boolean runOnce;
 	double chance;
 	int sec;
@@ -30,8 +31,7 @@ public abstract class Agent extends Thread{
 		this.buffX=buffX;
 		this.buffY=buffY;
 		
-		this.buffer=new ArrayList<Tile>();
-		this.buffer.ensureCapacity(buffX*buffY);
+		this.buffer=new Hashtable<Integer,Tile>();
 		
 		this.msec=sim.getMsec();
 		this.sec=sim.getSec();
@@ -60,9 +60,9 @@ public abstract class Agent extends Thread{
 			throw new IllegalArgumentException("buffer out of bounds");
 		}
 		
-		for(int i = buffSize(); i>0; i--){
+		for(int i = buffSize()-1; i>=0; i--){
 			this.g.lockTile(this, i);
-			buffer.set(i, new Tile(this.g.getTile(i)));
+			buffer.put(i, new Tile(this.g.getTile(i)));
 		}
 		
 	}
@@ -71,16 +71,19 @@ public abstract class Agent extends Thread{
 		for(int i = 0; i<buffSize(); i++){
 			Tile temp = buffer.get(i);
 			this.g.getTile(temp.getID()).copyTile(temp);
+			this.g.unlockTile(this, i);
 		}
 	}
 	
 	void waitForGo(){
-		//TODO
+		this.msec=this.sim.getSyncMsec(this.msec);
+		this.sec=this.sim.getSec();
 	}
 	
 	abstract void update();
 	
 	public void run(){
+		
 		try{
 			if(this.runOnce){
 				this.update();
@@ -90,6 +93,8 @@ public abstract class Agent extends Thread{
 						this.topLeftCopy();
 						this.update();
 						this.writeBuffer();
+					}else{
+						System.out.println("failed check");
 					}
 					this.waitForGo();
 				}

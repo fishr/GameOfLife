@@ -54,6 +54,8 @@ public class Grid extends JPanel implements KeyListener{
 		setPreferredSize(new Dimension(tileSize*maxX,tileSize*maxY));
 		addKeyListener(this);
 		repaint();
+		
+		this.agents=new Hashtable<Agent, PriorityQueue<Integer>>();
 	}
 
 	// Note: the next two functions return pointers to the tiles themselves, not to copies
@@ -80,7 +82,7 @@ public class Grid extends JPanel implements KeyListener{
 			}
 		}
 		
-		if(id<this.agents.get(taker).peek()){
+		if(this.agents.get(taker).peek()==null||id<this.agents.get(taker).peek()){
 			this.agents.get(taker).add(id);
 			getTile(id).lock.lock();
 		}else{
@@ -88,15 +90,25 @@ public class Grid extends JPanel implements KeyListener{
 		}
 	}
 	
-	public void releaseTiles(Agent dead){
-		PriorityQueue<Integer> q = this.agents.get(dead);
-		if(q==null)
-			return;
-		while(!q.isEmpty()){
-			getTile(q.remove()).lock.unlock();
+	public void unlockTile(Agent taker, Integer id){
+		synchronized(this.agents){
+			if(this.agents.get(taker).contains(id)){
+				this.agents.get(taker).remove(id);
+			}
 		}
-		
-		this.agents.remove(dead);
+	}
+	
+	public void releaseTiles(Agent dead){
+		synchronized(this.agents){
+			PriorityQueue<Integer> q = this.agents.get(dead);
+			if(q==null)
+				return;
+			while(!q.isEmpty()){
+				getTile(q.remove()).lock.unlock();
+			}
+			
+			this.agents.remove(dead);
+		}
 	}
 	
 	public void paintComponent(Graphics g) {
