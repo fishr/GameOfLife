@@ -18,6 +18,7 @@ public class Blinker extends Agent{
 			if(i==11||i==12||i==13){
 				this.buffer.get(i).flip();
 			}
+			this.buffer.get(i).changeColor(Color.BLUE);
 		}
 		
 	}

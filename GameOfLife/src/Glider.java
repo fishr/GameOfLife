@@ -23,6 +23,7 @@ public class Glider extends Agent{
 				if (this.buffer.get(i).getOnOff())
 					this.buffer.get(i).flip();
 			}
+			this.buffer.get(i).changeColor(Color.GREEN);
 		}
 	}
 	

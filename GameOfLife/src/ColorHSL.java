@@ -37,6 +37,10 @@ public class ColorHSL {
 		hsl[2] = 100-hsl[2];
 	}
 	
+	public float[] getHSL() {
+		return hsl;
+	}
+	
 	public Color decayColor() {
 		decay++;
 		if (decay > 5)

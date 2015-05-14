@@ -147,5 +147,9 @@ public class Tile {
 		}
 		return neighbors;
 	}
-
+	
+	public void changeColor(Color rgb) {
+		colorHSL = new ColorHSL(this, rgb, 0);
+	}
+	
 }
