@@ -28,6 +28,8 @@ public class Simulator extends JFrame implements Runnable{
 		agents=new ArrayList<Agent>();
 		agents.add(new Default(this,grid));
 		agents.get(0).start();
+		agents.add(new TileFlipper(this,grid,false, .5));
+		agents.get(1).start();
 	}
 	
 	public int getSec() {
@@ -37,12 +39,16 @@ public class Simulator extends JFrame implements Runnable{
 	public int getMsec() {
 		return msec;
 	}
+
+	public void unregister(Agent agent) {
+		this.agents.remove(agent);
+	}
 	
 	public int getSyncMsec(int ms) {
 		this.lock.lock();
 
 		try{
-			while(ms==msec&&this.syncCount==0){
+			while(ms==msec||this.syncCount==0){
 				try{
 					free.await();
 				}catch(InterruptedException e){
@@ -76,7 +82,7 @@ public class Simulator extends JFrame implements Runnable{
 				}
 				
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(100);
 //					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -108,9 +114,5 @@ public class Simulator extends JFrame implements Runnable{
 		sim.setVisible(true);
 		sim.run();
 		System.exit(NORMAL);
-	}
-
-	public void unregister(Agent agent) {
-		this.agents.remove(agent);
 	}
 }

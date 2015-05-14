@@ -60,17 +60,21 @@ public abstract class Agent extends Thread{
 		}
 		
 		for(int i = buffSize()-1; i>=0; i--){
-			this.g.lockTile(this, i);
-			buffer.put(i, new Tile(this.g.getTile(i)));
+			int x = this.leftX + i%this.buffX;
+			int y = this.topY + Math.floorDiv(i, this.buffX);
+			this.g.lockTile(this, x, y);
+			buffer.put(i, new Tile(this.g.getTile(x,y)));
 		}
 		
 	}
 	
 	void writeBuffer(){
 		for(int i = 0; i<buffSize(); i++){
+			int x = this.leftX + i%this.buffX;
+			int y = this.topY + Math.floorDiv(i, this.buffX);
 			Tile temp = buffer.get(i);
-			this.g.getTile(i).copyTile(temp);
-			this.g.unlockTile(this, i);
+			this.g.getTile(x,y).copyTile(temp);
+			this.g.unlockTile(this,x,y);
 		}
 	}
 	
@@ -84,21 +88,24 @@ public abstract class Agent extends Thread{
 	public void run(){
 		
 		try{
-			if(this.runOnce){
-				this.update();
-			}else{
-				while(this.sec<this.sim.endTime){
-					if(this.runCheck()){
-						this.topLeftCopy();
-						this.update();
-						this.writeBuffer();
-					}
-					this.waitForGo();
+			while(this.sec<this.sim.endTime){
+				this.waitForGo();
+				if(this.runCheck()){
+					this.preCopy();
+					this.topLeftCopy();
+					this.update();
+					this.writeBuffer();
 				}
+				
+				if(this.runOnce)
+					break;
 			}
 		}finally{
 			this.g.releaseTiles(this);
-			this.sim.unregister(this);
 		}
+	}
+
+	void preCopy() {
+		
 	}
 }

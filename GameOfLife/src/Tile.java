@@ -57,7 +57,7 @@ public class Tile {
 		grid = g;
 		ID = id;
 		x = id%grid.maxX;
-		y = id/grid.maxX;
+		y = Math.floorDiv(id, grid.maxX);
 		onOff = on;
 		colorHSL = new ColorHSL(this, rgb, 0);
 	}
@@ -69,7 +69,7 @@ public class Tile {
 		grid = g;
 		ID = id;
 		x = id%grid.maxX;
-		y = id/grid.maxX;
+		y = Math.floorDiv(id, grid.maxX);
 		onOff = on;
 		if (decay >= 0 && decay <=5)
 			decay = d;
