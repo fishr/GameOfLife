@@ -95,6 +95,7 @@ public class Grid extends JPanel implements KeyListener{
 	public void unlockTile(Agent taker, Integer id){
 		synchronized(this.agents){
 			if(this.agents.get(taker).contains(id)){
+				getTile(id).lock.unlock();
 				this.agents.get(taker).remove(id);
 			}
 		}
