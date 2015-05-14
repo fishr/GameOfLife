@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Agent extends Thread{
 
@@ -38,7 +37,7 @@ public abstract class Agent extends Thread{
 	}
 	
 	boolean runCheck(){
-		double r = ThreadLocalRandom.current().nextDouble();
+		double r = Math.random();
 		return chance>r;
 	}
 	
@@ -70,7 +69,7 @@ public abstract class Agent extends Thread{
 	void writeBuffer(){
 		for(int i = 0; i<buffSize(); i++){
 			Tile temp = buffer.get(i);
-			this.g.getTile(temp.getID()).copyTile(temp);
+			this.g.getTile(i).copyTile(temp);
 			this.g.unlockTile(this, i);
 		}
 	}
@@ -90,17 +89,22 @@ public abstract class Agent extends Thread{
 			}else{
 				while(this.sec<this.sim.endTime){
 					if(this.runCheck()){
+						System.out.print(this.sim.syncCount);
+						System.out.print(" of ");
+						System.out.println(this.sim.agents.size());
 						this.topLeftCopy();
 						this.update();
 						this.writeBuffer();
 					}else{
 						System.out.println("failed check");
 					}
+					System.out.println("done");
 					this.waitForGo();
 				}
 			}
 		}finally{
 			this.g.releaseTiles(this);
+			this.sim.unregister(this);
 		}
 	}
 }

@@ -13,8 +13,8 @@ public class Simulator extends JFrame implements Runnable{
 	private int msec = 0;
 	private int dt = 100; // msec
 	private Grid grid;
-	private ArrayList<Agent> agents;
-	private int syncCount=0;
+	ArrayList<Agent> agents;
+	protected int syncCount=0;
 	
 	private final Lock lock = new ReentrantLock();
 	private final Condition free = lock.newCondition();
@@ -38,15 +38,16 @@ public class Simulator extends JFrame implements Runnable{
 	
 	public int getSyncMsec(int ms) {
 		this.lock.lock();
+
 		try{
-			this.syncCount--;
-			while(ms==msec){
+			while(ms==msec&&this.syncCount==0){
 				try{
 					free.await();
 				}catch(InterruptedException e){
 					Thread.currentThread().interrupt();
 				}
 			}
+			this.syncCount--;
 			free.signalAll();
 		}finally{
 			lock.unlock();
@@ -57,34 +58,35 @@ public class Simulator extends JFrame implements Runnable{
 	private void advanceClock() {
 		this.lock.lock();
 		try{
-			while(this.syncCount>0){
+			while(this.syncCount!=0){
 				try{
 					free.await();
 				}catch(InterruptedException e){
 					Thread.currentThread().interrupt();
 				}
 			}
-			msec+=dt;
-			if (msec>=1000) {
-				sec++;
-				msec-=1000;
+			synchronized(this){
+				this.syncCount=this.agents.size();
+				msec+=dt;
+				if (msec>=1000) {
+					sec++;
+					msec-=1000;
+				}
+				
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}
-			
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			this.syncCount=this.agents.size();
 			free.signalAll();
 		}finally{
 			lock.unlock();
 		}
 	}
 	
-	// TODO: Add synchronization with Agent classes
 	public void run() {
 		while (getSec() < endTime) {
 			if (getMsec()%dt == 0) {
@@ -102,5 +104,10 @@ public class Simulator extends JFrame implements Runnable{
 		sim.pack();
 		sim.setVisible(true);
 		sim.run();
+		System.exit(NORMAL);
+	}
+
+	public void unregister(Agent agent) {
+		this.agents.remove(agent);
 	}
 }
