@@ -14,8 +14,8 @@ public class Tile {
 	final Lock lock = new ReentrantLock();
 	final Condition occupied  = lock.newCondition();
 	
-	private Simulator sim;
-	private Grid grid;
+	private final Simulator sim;
+	private final Grid grid;
 	
 	public Tile (Simulator s, Grid g, int x, int y, boolean on) {
 		if (x < 0 || y < 0)
@@ -31,7 +31,7 @@ public class Tile {
 	}
 	
 	public Tile (Simulator s, Grid g, int id, boolean on) {
-		if (sim == null || g == null)
+		if (s == null || g == null)
 			throw new NullPointerException("sim or grid is null");
 		this.sim = s;
 		this.grid = g;
@@ -55,12 +55,22 @@ public class Tile {
 		}
 	}
 	
+	synchronized void copyTile(Tile copy){
+		this.decay=copy.getDecay();
+		this.color=new ColorHSL(copy.getColor());
+		this.onOff=copy.getOnOff();
+	}
+	
 	public int getID() {
 		return ID;
 	}
 	
 	public int[] getCoordinates() {
 		return new int[]{x,y};
+	}
+	
+	public ColorHSL getColor(){
+		return this.color;
 	}
 	
 	public int getDecay() {
