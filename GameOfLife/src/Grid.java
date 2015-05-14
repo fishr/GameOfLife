@@ -4,9 +4,11 @@ import java.util.*;
 import javax.swing.JPanel;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.geom.*;
 
-public class Grid extends JPanel{
+public class Grid extends JPanel implements KeyListener{
 
 	private Simulator sim;
 	
@@ -16,6 +18,7 @@ public class Grid extends JPanel{
 	protected final int maxY;
 	private ArrayList<Tile> tiles;
 	private static int tileSize = 20; // pixels to a side
+	private char c;
 	
 	public Grid (Simulator s, String csvFile) {
 		if (s == null)
@@ -51,6 +54,7 @@ public class Grid extends JPanel{
 		maxX = x;
 		maxY = y;
 		setPreferredSize(new Dimension(tileSize*maxX,tileSize*maxY));
+		addKeyListener(this);
 		repaint();
 		
 		this.agents=new Hashtable<Agent, PriorityQueue<Integer>>();
@@ -115,14 +119,35 @@ public class Grid extends JPanel{
 		for (int i=0; i<tiles.size(); i++) {
 			int x = tiles.get(i).getCoordinates()[0];
 			int y = tiles.get(i).getCoordinates()[1];
-//			boolean on = tiles.get(i).getOnOff();
-//			if (on)
-//				g2.setPaint(Color.BLACK); // TODO: Add color instead of default
-//			else
-//				g2.setPaint(Color.WHITE);
 			Color c = tiles.get(i).getColorHSL().getColorRGB();
 			g2.setPaint(c);
 			g2.fill(new Rectangle2D.Double(tileSize*x, tileSize*y, tileSize, tileSize));
 		}
 	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		c = e.getKeyChar();
+		if (c == 'g') {
+			Glider g = new Glider(sim, this, true, 1, Color.GREEN, 4, 4);
+			g.start();
+		}
+		if (c == 't') {
+			TileFlipper t = new TileFlipper(sim, this, true, 1, Color.RED, 1, 1);
+			t.start();
+		}
+		if (c == 'b') {
+			Blinker b = new Blinker(sim, this, true, 1, Color.BLUE, 4, 4);
+			b.start();
+		}
+	}
+
 }
