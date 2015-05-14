@@ -64,7 +64,8 @@ public abstract class Agent extends Thread{
 		
 		for(int i = buffSize()-1; i>=0; i--){
 			int x = this.leftX + i%this.buffX;
-			int y = this.topY + Math.floorDiv(i, this.buffX);
+//			int y = this.topY + Math.floorDiv(i, this.buffX); TODO: Switch back to floorDiv
+			int y = this.topY + i/this.buffX;
 			this.g.lockTile(this, x, y);
 			buffer.put(i, new Tile(this.g.getTile(x,y)));
 		}
@@ -74,7 +75,8 @@ public abstract class Agent extends Thread{
 	void writeBuffer(){
 		for(int i = 0; i<buffSize(); i++){
 			int x = this.leftX + i%this.buffX;
-			int y = this.topY + Math.floorDiv(i, this.buffX);
+//			int y = this.topY + Math.floorDiv(i, this.buffX); TODO: Switch back to floorDiv
+			int y = this.topY + i/this.buffX;
 			Tile temp = buffer.get(i);
 			this.g.getTile(x,y).copyTile(temp);
 			this.g.unlockTile(this,x,y);

@@ -16,7 +16,6 @@ public class Grid extends JPanel implements KeyListener{
 	protected int maxY;
 	private ArrayList<Tile> tiles;
 	private static int tileSize = 20; // pixels to a side
-	private char c;
 	
 	public Grid (Simulator s, String csvFile) {
 		if (s == null)
@@ -159,7 +158,7 @@ public class Grid extends JPanel implements KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		c = e.getKeyChar();
+		char c = e.getKeyChar();
 		System.out.println("key typed: " + c);
 		if (c == 'g') {
 			Glider g = new Glider(sim, this, true, 1);
