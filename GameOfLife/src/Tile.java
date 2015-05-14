@@ -8,7 +8,7 @@ public class Tile {
 	private final int ID; // ID, x, and y - all 0 indexed
 	private final int x;
 	private final int y;
-	private int decay = 0; // undecayed (full color) = 0; fully decayed to black/white = 5;
+	private int decay = 0; // undecayed (full color) = 0; fully decayed to black/white = 25;
 	private ColorHSL colorHSL;
 	private boolean onOff;
 	
@@ -43,7 +43,7 @@ public class Tile {
 		this.y = y;
 		ID = y*grid.maxX + x;
 		onOff = on;
-		if (decay >= 0 && decay <=5)
+		if (decay >= 0 && decay <=25)
 			decay = d;
 		else
 			decay = 0;
@@ -73,7 +73,7 @@ public class Tile {
 		y = id/grid.maxX;
 //		y = Math.floorDiv(id, grid.maxX); TODO: Switch back to floorDiv
 		onOff = on;
-		if (decay >= 0 && decay <=5)
+		if (decay >= 0 && decay <=25)
 			decay = d;
 		else
 			decay = 0;
@@ -118,8 +118,8 @@ public class Tile {
 
 	public void decayTile() {
 		decay++;
-		if (decay > 5)
-			decay = 5;
+		if (decay >= 25)
+			decay = 25;
 		colorHSL.decayColor();
 	}
 	
