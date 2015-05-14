@@ -21,7 +21,7 @@ public class Default extends Agent {
 				left=true;
 				votes+=this.buffer.get(i-1).getOnOff() ? 1 : 0;
 			}
-			if((i%(this.buffX-1))!=0||i==0){
+			if((i%(this.buffX))-(buffX-1)!=0||i==0){
 				right=true;
 				votes+=this.buffer.get(i+1).getOnOff() ? 1 : 0;
 			}
