@@ -23,6 +23,8 @@ public class Simulator extends JFrame implements Runnable{
 		Container c = getContentPane();
 		grid = new Grid(this, initFile);
 		c.add(grid, BorderLayout.CENTER);
+		grid.setFocusable(true);
+		grid.requestFocusInWindow();
 		agents=new ArrayList<Agent>();
 		agents.add(new Default(this,grid));
 		agents.get(0).start();

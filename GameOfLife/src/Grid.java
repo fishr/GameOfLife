@@ -135,6 +135,7 @@ public class Grid extends JPanel implements KeyListener{
 	@Override
 	public void keyTyped(KeyEvent e) {
 		c = e.getKeyChar();
+		System.out.println("key typed: " + c);
 		if (c == 'g') {
 			Glider g = new Glider(sim, this, true, 1, Color.GREEN, 4, 4);
 			g.start();
