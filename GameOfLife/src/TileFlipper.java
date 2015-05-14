@@ -12,6 +12,7 @@ public class TileFlipper extends Agent{
 	@Override
 	void update() {
 		this.buffer.get(0).flip();
+		System.out.println("flip");
 	}
 	
 	@Override

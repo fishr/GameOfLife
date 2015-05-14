@@ -89,13 +89,13 @@ public abstract class Agent extends Thread{
 		
 		try{
 			while(this.sec<this.sim.endTime){
+				this.waitForGo();
 				if(this.runCheck()){
 					this.preCopy();
 					this.topLeftCopy();
 					this.update();
 					this.writeBuffer();
 				}
-				this.waitForGo();
 				
 				if(this.runOnce)
 					break;

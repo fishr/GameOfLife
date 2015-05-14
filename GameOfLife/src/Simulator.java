@@ -48,7 +48,7 @@ public class Simulator extends JFrame implements Runnable{
 		this.lock.lock();
 
 		try{
-			while(ms==msec&&this.syncCount==0){
+			while(ms==msec||this.syncCount==0){
 				try{
 					free.await();
 				}catch(InterruptedException e){

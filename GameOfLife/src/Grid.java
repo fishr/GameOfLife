@@ -163,14 +163,17 @@ public class Grid extends JPanel implements KeyListener{
 		System.out.println("key typed: " + c);
 		if (c == 'g') {
 			Glider g = new Glider(sim, this, true, 1);
+			this.sim.agents.add(g);
 			g.start();
 		}
 		if (c == 't') {
 			TileFlipper t = new TileFlipper(sim, this, true, 1);
+			this.sim.agents.add(t);
 			t.start();
 		}
 		if (c == 'b') {
 			Blinker b = new Blinker(sim, this, true, 1);
+			this.sim.agents.add(b);
 			b.start();
 		}
 	}
