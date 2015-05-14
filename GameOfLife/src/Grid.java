@@ -12,8 +12,8 @@ public class Grid extends JPanel implements KeyListener{
 	
 	Hashtable<Agent, PriorityQueue<Integer>> agents;
 	
-	protected final int maxX;
-	protected final int maxY;
+	protected int maxX;
+	protected int maxY;
 	private ArrayList<Tile> tiles;
 	private static int tileSize = 20; // pixels to a side
 	private char c;
@@ -34,6 +34,7 @@ public class Grid extends JPanel implements KeyListener{
 			while ((line = br.readLine()) != null) {
 				x = 0;
 				String[] cells = line.split(splitter);
+				this.maxX=cells.length;
 				for (int i=0; i<cells.length; i++) {
 					boolean on = false;
 					Color c = Color.GRAY;
@@ -49,7 +50,6 @@ public class Grid extends JPanel implements KeyListener{
 		catch (IOException e){
 			e.printStackTrace();
 		}
-		maxX = x;
 		maxY = y;
 		setPreferredSize(new Dimension(tileSize*maxX,tileSize*maxY));
 		addKeyListener(this);
@@ -90,11 +90,36 @@ public class Grid extends JPanel implements KeyListener{
 		}
 	}
 	
+	public void lockTile(Agent taker, int x, int y){
+		synchronized(this.agents){
+			if(!this.agents.containsKey(taker)){
+				PriorityQueue<Integer> q = new PriorityQueue<Integer>();
+				this.agents.put(taker, q);
+			}
+		}
+		
+		if(this.agents.get(taker).peek()==null||getTile(x,y).getID()<this.agents.get(taker).peek()){
+			this.agents.get(taker).add(getTile(x,y).getID());
+			getTile(x,y).lock.lock();
+		}else{
+			throw new IllegalArgumentException("cannot lock tile of higher id");
+		}
+	}
+	
 	public void unlockTile(Agent taker, Integer id){
 		synchronized(this.agents){
 			if(this.agents.get(taker).contains(id)){
 				getTile(id).lock.unlock();
 				this.agents.get(taker).remove(id);
+			}
+		}
+	}
+	
+	public void unlockTile(Agent taker, int x, int y){
+		synchronized(this.agents){
+			if(this.agents.get(taker).contains(getTile(x,y).getID())){
+				getTile(x,y).lock.unlock();
+				this.agents.get(taker).remove(getTile(x,y).getID());
 			}
 		}
 	}
@@ -105,7 +130,7 @@ public class Grid extends JPanel implements KeyListener{
 			if(q==null)
 				return;
 			while(!q.isEmpty()){
-				getTile(q.remove()).lock.unlock();
+				unlockTile(dead, getTile(q.remove()).getID());
 			}
 			
 			this.agents.remove(dead);
@@ -136,15 +161,15 @@ public class Grid extends JPanel implements KeyListener{
 	public void keyTyped(KeyEvent e) {
 		c = e.getKeyChar();
 		if (c == 'g') {
-			Glider g = new Glider(sim, this, true, 1, Color.GREEN, 4, 4);
+			Glider g = new Glider(sim, this, true, 1);
 			g.start();
 		}
 		if (c == 't') {
-			TileFlipper t = new TileFlipper(sim, this, true, 1, Color.RED, 1, 1);
+			TileFlipper t = new TileFlipper(sim, this, true, 1);
 			t.start();
 		}
 		if (c == 'b') {
-			Blinker b = new Blinker(sim, this, true, 1, Color.BLUE, 4, 4);
+			Blinker b = new Blinker(sim, this, true, 1);
 			b.start();
 		}
 	}

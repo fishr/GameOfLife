@@ -3,9 +3,8 @@ import java.awt.Color;
 
 public class Glider extends Agent{
 
-	public Glider(Simulator sim, Grid g, boolean runOnce, double chance,
-			Color c, int buffX, int buffY) {
-		super(sim, g, runOnce, chance, c, buffX, buffY);
+	public Glider(Simulator sim, Grid g, boolean runOnce, double chance) {
+		super(sim, g, runOnce, chance, Color.GREEN, 4, 4);
 		// TODO Auto-generated constructor stub
 	}
 
