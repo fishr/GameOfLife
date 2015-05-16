@@ -54,38 +54,6 @@ public class Tile {
 		colorHSL = new ColorHSL(this, rgb, decay);
 	}
 	
-	public Tile (Simulator s, Grid g, int id, boolean on, Color rgb) {
-		if (s == null || g == null)
-			throw new NullPointerException("sim or grid is null");
-		sim = s;
-		grid = g;
-		if (id<0 || id >= grid.maxX*grid.maxY)
-			throw new IllegalArgumentException("ID out of range");
-		ID = id;
-		x = id%grid.maxX;
-		y = id/grid.maxX;
-//		y = Math.floorDiv(id, grid.maxX); TODO: Switch back to floorDiv
-		onOff = on;
-		colorHSL = new ColorHSL(this, rgb, 0);
-	}
-	
-	public Tile (Simulator s, Grid g, int id, boolean on, Color rgb, int d) {
-		if (s == null || g == null)
-			throw new NullPointerException("sim or grid is null");
-		sim = s;
-		grid = g;
-		ID = id;
-		x = id%grid.maxX;
-		y = id/grid.maxX;
-//		y = Math.floorDiv(id, grid.maxX); TODO: Switch back to floorDiv
-		onOff = on;
-		if (d >= 0 && d <=25)
-			decay = d;
-		else
-			decay = 0;
-		colorHSL = new ColorHSL(this, rgb, d);
-	}
-	
 	public Tile(Tile copy){
 		if (copy == null)
 			throw new NullPointerException("Copy tile is null");
