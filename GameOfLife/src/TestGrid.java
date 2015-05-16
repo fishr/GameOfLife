@@ -41,7 +41,7 @@ public class TestGrid {
 		Tile t = g.getTile(5,10);
 		assertEquals(t.getCoordinates()[0], 5);
 		assertEquals(t.getCoordinates()[1], 10);
-		assertEquals(t.getID(),505);
+		assertEquals(t.getID(),205);
 	}
 
 	@Test (expected = IllegalArgumentException.class)
