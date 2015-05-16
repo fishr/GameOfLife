@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -13,14 +14,19 @@ public class Simulator extends JFrame implements Runnable{
 	private int msec = 0;
 	final int dt = 100; // msec
 	private Grid grid;
-	ArrayList<Agent> agents;
+	protected ArrayList<Agent> agents;
 	private int syncCount=0;
-	private int syncReset=0;
+	protected int syncReset=0;
 	
 	private final Lock lock = new ReentrantLock();
 	private final Condition free = lock.newCondition();
 	
 	public Simulator (String initFile) {
+		File tempFile = new File(initFile);
+		if (!tempFile.exists())
+			throw new IllegalArgumentException("no such init file exists in current directory");
+		if (!initFile.endsWith(".csv"))
+			throw new IllegalArgumentException("init file must be a csv file");
 		Container c = getContentPane();
 		grid = new Grid(this, initFile);
 		c.add(grid, BorderLayout.CENTER);
