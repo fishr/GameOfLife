@@ -6,7 +6,6 @@ public class Blinker extends Agent{
 		super(sim, g, runOnce, chance, Color.BLUE, 3, 3);
 
 		this.setROI((int) Math.floor(Math.random()*(this.g.maxX-this.buffX)),(int) Math.floor(Math.random()*(this.g.maxY-this.buffY)));
-		System.out.println("blinker");
 	}
 
 	@Override

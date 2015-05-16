@@ -7,7 +7,6 @@ public class Glider extends Agent{
 	public Glider(Simulator sim, Grid g, boolean runOnce, double chance) {
 		super(sim, g, runOnce, chance, Color.GREEN, 5, 5);
 		this.setROI((int) Math.floor(Math.random()*(this.g.maxX-this.buffX)),(int) Math.floor(Math.random()*(this.g.maxY-this.buffY)));
-		System.out.println("glider");
 	}
 
 	@Override

@@ -6,7 +6,6 @@ public class TileFlipper extends Agent{
 	public TileFlipper(Simulator sim, Grid g, boolean runOnce, double chance) {
 		super(sim, g, runOnce, chance, Color.RED, 1, 1);
 		this.setROI((int) Math.floor(Math.random()*(this.g.maxX-this.buffX)),(int) Math.floor(Math.random()*(this.g.maxY-this.buffY)));
-		System.out.println("flipper");
 	}
 
 	@Override
