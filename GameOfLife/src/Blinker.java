@@ -3,7 +3,7 @@ import java.awt.Color;
 public class Blinker extends Agent{
 
 	public Blinker(Simulator sim, Grid g, boolean runOnce, double chance) {
-		super(sim, g, runOnce, chance, Color.BLUE, 5, 5);
+		super(sim, g, runOnce, chance, Color.BLUE, 3, 3);
 
 		this.topY=(int) Math.floor(Math.random()*(this.g.maxY-this.buffY));
 		this.leftX=(int) Math.floor(Math.random()*(this.g.maxX-this.buffX));
@@ -15,7 +15,7 @@ public class Blinker extends Agent{
 			if(this.buffer.get(i).getOnOff()){
 				this.buffer.get(i).flip();
 			}
-			if(i==11||i==12||i==13){
+			if(i==3||i==4||i==5){
 				this.buffer.get(i).flip();
 			}
 			this.buffer.get(i).changeColor(Color.BLUE);
