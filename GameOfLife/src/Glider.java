@@ -6,8 +6,8 @@ public class Glider extends Agent{
 
 	public Glider(Simulator sim, Grid g, boolean runOnce, double chance) {
 		super(sim, g, runOnce, chance, Color.GREEN, 5, 5);
-		this.topY=(int) Math.floor(Math.random()*(this.g.maxY-this.buffY));
-		this.leftX=(int) Math.floor(Math.random()*(this.g.maxX-this.buffX));
+		this.setROI((int) Math.floor(Math.random()*(this.g.maxX-this.buffX)),(int) Math.floor(Math.random()*(this.g.maxY-this.buffY)));
+		System.out.println("glider");
 	}
 
 	@Override
@@ -29,8 +29,7 @@ public class Glider extends Agent{
 	
 	@Override
 	void preCopy(){
-		this.topY=(int) Math.floor(Math.random()*(this.g.maxY-this.buffY));
-		this.leftX=(int) Math.floor(Math.random()*(this.g.maxX-this.buffX));
+		this.setROI((int) Math.floor(Math.random()*(this.g.maxX-this.buffX)),(int) Math.floor(Math.random()*(this.g.maxY-this.buffY)));
 	}
 
 }

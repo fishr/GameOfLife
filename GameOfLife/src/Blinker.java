@@ -5,8 +5,8 @@ public class Blinker extends Agent{
 	public Blinker(Simulator sim, Grid g, boolean runOnce, double chance) {
 		super(sim, g, runOnce, chance, Color.BLUE, 3, 3);
 
-		this.topY=(int) Math.floor(Math.random()*(this.g.maxY-this.buffY));
-		this.leftX=(int) Math.floor(Math.random()*(this.g.maxX-this.buffX));
+		this.setROI((int) Math.floor(Math.random()*(this.g.maxX-this.buffX)),(int) Math.floor(Math.random()*(this.g.maxY-this.buffY)));
+		System.out.println("blinker");
 	}
 
 	@Override
@@ -25,8 +25,7 @@ public class Blinker extends Agent{
 	
 	@Override
 	void preCopy(){
-		this.topY=(int) Math.floor(Math.random()*(this.g.maxY-this.buffY));
-		this.leftX=(int) Math.floor(Math.random()*(this.g.maxX-this.buffX));
+		this.setROI((int) Math.floor(Math.random()*(this.g.maxX-this.buffX)),(int) Math.floor(Math.random()*(this.g.maxY-this.buffY)));
 	}
 
 }
