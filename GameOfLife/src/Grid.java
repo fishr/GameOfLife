@@ -57,7 +57,7 @@ public class Grid extends JPanel implements KeyListener{
 		this.agents=new Hashtable<Agent, PriorityQueue<Integer>>();
 	}
 
-	// Note: the next two functions return pointers to the tiles themselves, not to copies
+//	 Note: the next two functions return pointers to the tiles themselves, not to copies
 	public Tile getTile(int x, int y) {
 		if (x >= maxX || y >= maxY)
 			throw new IllegalArgumentException("x or y out of bounds");
