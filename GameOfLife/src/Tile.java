@@ -25,6 +25,8 @@ public class Tile {
 			throw new NullPointerException("sim or grid is null");
 		this.sim = s;
 		this.grid = g;
+		if (x < 0 || x >= grid.maxX || y<0) // cannot test y >= maxY because tiles created before maxY known (before csv file fully parsed)
+			throw new IllegalArgumentException ("x or y out of range " + grid.maxX + ", " + x + "; " + grid.maxY + ", " + y);
 		this.x = x;
 		this.y = y;
 		ID = y*grid.maxX + x;
@@ -39,11 +41,13 @@ public class Tile {
 			throw new NullPointerException("sim or grid is null");
 		this.sim = s;
 		this.grid = g;
+		if (x < 0 || x >= grid.maxX || y<0)
+			throw new IllegalArgumentException ("x or y out of range " + grid.maxX + ", " + x + "; " + grid.maxY + ", " + y);
 		this.x = x;
 		this.y = y;
 		ID = y*grid.maxX + x;
 		onOff = on;
-		if (decay >= 0 && decay <=25)
+		if (d >= 0 && d <=25)
 			decay = d;
 		else
 			decay = 0;
@@ -55,6 +59,8 @@ public class Tile {
 			throw new NullPointerException("sim or grid is null");
 		sim = s;
 		grid = g;
+		if (id<0 || id >= grid.maxX*grid.maxY)
+			throw new IllegalArgumentException("ID out of range");
 		ID = id;
 		x = id%grid.maxX;
 		y = id/grid.maxX;
@@ -73,7 +79,7 @@ public class Tile {
 		y = id/grid.maxX;
 //		y = Math.floorDiv(id, grid.maxX); TODO: Switch back to floorDiv
 		onOff = on;
-		if (decay >= 0 && decay <=25)
+		if (d >= 0 && d <=25)
 			decay = d;
 		else
 			decay = 0;
@@ -81,6 +87,8 @@ public class Tile {
 	}
 	
 	public Tile(Tile copy){
+		if (copy == null)
+			throw new NullPointerException("Copy tile is null");
 		synchronized(copy){
 			this.ID=copy.ID;
 			this.x=copy.x;
@@ -134,18 +142,6 @@ public class Tile {
 	
 	public ColorHSL getColorHSL() {
 		return colorHSL;
-	}
-	
-	public ArrayList<Tile> getNeighbors() {
-		ArrayList<Tile> neighbors = new ArrayList<Tile>();
-		for (int i=x-1; i<=x+1; i++) {
-			for (int j=y-1; j<=y+1; j++) {
-				if (i!=j && i>=0 && j>=0 && i<grid.maxX && j<grid.maxY) {
-					neighbors.add(grid.getTile(i,j));
-				}
-			}
-		}
-		return neighbors;
 	}
 	
 	public void changeColor(Color rgb, int d) {
