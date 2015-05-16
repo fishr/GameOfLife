@@ -108,8 +108,7 @@ public class Default extends Agent {
 	
 	@Override
 	synchronized void setROI(int x, int y){
-		this.leftX=0;
-		this.topY=0;
+		super.setROI(0, 0);
 	}
 	
 

@@ -14,11 +14,11 @@ public abstract class Agent extends Thread{
 	Color c;
 	int buffX;
 	int buffY;
-	int leftX=0;
-	int topY=0;
+	private int leftX=0;
+	private int topY=0;
 	
 	public Agent(Simulator sim, Grid g, boolean runOnce, double chance, Color c, int buffX, int buffY){
-		if(chance>1 || chance<=0 ||sim.equals(null)||g.equals(null)||c.equals(null)||buffX<1||buffY<1){
+		if(chance>1 || chance<=0 ||sim==null||g==null||c==null||buffX<1||buffY<1){
 			throw new IllegalArgumentException();
 		}
 		
@@ -49,8 +49,11 @@ public abstract class Agent extends Thread{
 	}
 	
 	synchronized void setROI(int x, int y){
-		if(((this.leftX)>this.g.maxX)||((this.topY)>this.g.maxY)){
+		if(((x)>this.g.maxX)||((y)>this.g.maxY)||y<0||x<0){
 			throw new IllegalArgumentException("corner out of bounds");
+		}
+		if(((x+this.buffX)>=this.g.maxX)||((y+this.buffY)>=this.g.maxY)){
+			throw new IllegalArgumentException("buffer out of bounds");
 		}
 		
 		this.topY=y;
@@ -58,9 +61,6 @@ public abstract class Agent extends Thread{
 	}
 	
 	void topLeftCopy(){
-		if(((this.leftX+this.buffX)>this.g.maxX)||((this.topY+this.buffY)>this.g.maxY)){
-			throw new IllegalArgumentException("buffer out of bounds");
-		}
 		
 		for(int i = buffSize()-1; i>=0; i--){
 			int x = this.leftX + i%this.buffX;

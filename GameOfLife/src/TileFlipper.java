@@ -5,8 +5,8 @@ public class TileFlipper extends Agent{
 
 	public TileFlipper(Simulator sim, Grid g, boolean runOnce, double chance) {
 		super(sim, g, runOnce, chance, Color.RED, 1, 1);
-		this.topY=(int) Math.floor(Math.random()*this.g.maxY);
-		this.leftX=(int) Math.floor(Math.random()*this.g.maxX);
+		this.setROI((int) Math.floor(Math.random()*(this.g.maxX-this.buffX)),(int) Math.floor(Math.random()*(this.g.maxY-this.buffY)));
+		System.out.println("flipper");
 	}
 
 	@Override
@@ -17,8 +17,7 @@ public class TileFlipper extends Agent{
 	
 	@Override
 	void preCopy(){
-		this.topY=(int) Math.floor(Math.random()*this.g.maxY);
-		this.leftX=(int) Math.floor(Math.random()*this.g.maxX);
+		this.setROI((int) Math.floor(Math.random()*(this.g.maxX-this.buffX)),(int) Math.floor(Math.random()*(this.g.maxY-this.buffY)));
 	}
 
 }
