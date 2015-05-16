@@ -51,7 +51,7 @@ public class Tile {
 			decay = d;
 		else
 			decay = 0;
-		colorHSL = new ColorHSL(this, rgb, d);
+		colorHSL = new ColorHSL(this, rgb, decay);
 	}
 	
 	public Tile (Simulator s, Grid g, int id, boolean on, Color rgb) {

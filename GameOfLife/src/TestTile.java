@@ -37,7 +37,7 @@ public class TestTile {
 		Tile t = new Tile(sim, g, 6,3, true, Color.RED);
 	}
 	
-	@Test
+	@Test 
 	public void testConstructor_decayOutOfRange() {
 		Simulator sim = new Simulator ("infin.csv");
 		Grid g = new Grid (sim, "infin.csv");
