@@ -1,4 +1,5 @@
 // Code adapted from Rob Camick's HSLColor class
+// Methods toRGB(), fromRGB(), and HueToRGB() directly copied
 // Documentation: https://tips4java.wordpress.com/2009/07/05/hsl-color/
 // Original code: http://www.camick.com/java/source/HSLColor.java
 
@@ -12,9 +13,11 @@ public class ColorHSL {
 	private int decay;
 	
 	public ColorHSL (Tile t, Color rgb, int d) {
+		if (t == null || rgb == null)
+			throw new NullPointerException("tile or color are null");
 		this.rgb = rgb;
 		this.tile = t;
-		if (decay < 0 || decay > 25)
+		if (d < 0 || d > 25)
 			throw new IllegalArgumentException ("decay must be in range [0,25]");
 		decay = d;
 		hsl = fromRGB(rgb);
@@ -63,6 +66,7 @@ public class ColorHSL {
 		return rgb;
 	}
 	
+	///////////// All code below this point credited to Rob Camick //////////////////////
 	public static Color toRGB (float[] hsl) {
 		float h = hsl[0]; float s = hsl[1]; float l = hsl[2];
 		if (s < 0.0f || s > 100.0f)
@@ -76,24 +80,18 @@ public class ColorHSL {
 		h /= 360f;
 		s /= 100f;
 		l /= 100f;
-
 		float q = 0;
-
 		if (l < 0.5)
 			q = l * (1 + s);
 		else
 			q = (l + s) - (s * l);
-
 		float p = 2 * l - q;
-
 		float r = Math.max(0, HueToRGB(p, q, h + (1.0f / 3.0f)));
 		float g = Math.max(0, HueToRGB(p, q, h));
 		float b = Math.max(0, HueToRGB(p, q, h - (1.0f / 3.0f)));
-
 		r = Math.min(r, 1.0f);
 		g = Math.min(g, 1.0f);
 		b = Math.min(b, 1.0f);
-
 		return new Color(r, g, b, 1.0f);
 	}
 	

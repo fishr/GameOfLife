@@ -22,7 +22,7 @@ public class TestSimulator {
 	public void testConstructor_goodFile() {
 		String goodFile = new String("blank_big.csv");
 		Simulator sim = new Simulator(goodFile);
-		// no exception should be thrown
+		assertTrue(true);
 	}
 	
 	@Test
